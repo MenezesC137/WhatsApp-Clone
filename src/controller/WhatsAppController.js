@@ -97,6 +97,7 @@ class WhatsAppController {
 
     initEvents() {
 
+        //CONFIG. PERFIL
         this.el.myPhoto.on('click', e => {
 
             this.closeAllLeftPanel();
@@ -108,6 +109,7 @@ class WhatsAppController {
 
         })
 
+        //Adicionar Contato
         this.el.btnNewContact.on('click', e => {
 
             this.closeAllLeftPanel();
@@ -119,24 +121,28 @@ class WhatsAppController {
 
         })
 
+        //Fechar o menu config
         this.el.btnClosePanelEditProfile.on('click', e => {
 
             this.el.panelEditProfile.removeClass('open');
 
         })
 
+        //Fechar o painel de contato
         this.el.btnClosePanelAddContact.on('click', e => {
 
             this.el.panelAddContact.removeClass('open');
 
         })
 
+        //Input da foto de perfil
         this.el.photoContainerEditProfile.on('click', e => {
 
             this.el.inputProfilePhoto.click();
 
         })
 
+        //Enter no nome do perfil
         this.el.inputNamePanelEditProfile.on('keypress', e => {
 
             if (e.key === 'Enter') {
@@ -147,6 +153,7 @@ class WhatsAppController {
             }
 
         })
+
 
         this.el.btnSavePanelEditProfile.on('click', e => {
 
@@ -186,11 +193,11 @@ class WhatsAppController {
             this.el.inputPhoto.click();
         })
 
-        this.el.inputPhoto.on('change', e=>{
+        this.el.inputPhoto.on('change', e => {
 
             console.log(this.el.inputPhoto.files);
 
-            [...this.el.inputPhoto.files].forEach(file=>{
+            [...this.el.inputPhoto.files].forEach(file => {
 
                 console.log(file);
 
@@ -199,46 +206,46 @@ class WhatsAppController {
         })
 
         this.el.btnAttachCamera.on('click', e => {
-           
+
             this.closeAllMainPanel();
             this.el.panelCamera.addClass('open');
             this.el.panelCamera.css({
-                'height':'108%'
+                'height': '108%'
             })
-        
+
         })
 
-        this.el.btnClosePanelCamera.on('click', e=>{
+        this.el.btnClosePanelCamera.on('click', e => {
 
             this.closeAllMainPanel();
             this.el.panelMessagesContainer.show();
 
         })
 
-        this.el.btnTakePicture.on('click', e=>{
+        this.el.btnTakePicture.on('click', e => {
 
             console.log('Take-picture');
 
         })
 
         this.el.btnAttachDocument.on('click', e => {
-            
+
             this.closeAllMainPanel();
             this.el.panelDocumentPreview.addClass('open')
             this.el.panelDocumentPreview.css({
-                'height':'108%'
+                'height': '108%'
             })
 
         })
 
-        this.el.btnClosePanelDocumentPreview.on('click', e=>{
+        this.el.btnClosePanelDocumentPreview.on('click', e => {
 
             this.closeAllMainPanel();
             this.el.panelMessagesContainer.show();
 
         })
 
-        this.el.btnSendDocument.on('click', e=> {
+        this.el.btnSendDocument.on('click', e => {
 
             console.log('send document');
 
@@ -247,23 +254,71 @@ class WhatsAppController {
         this.el.btnAttachContact.on('click', e => {
 
             this.el.modalContacts.show();
-        
+
         })
 
-        this.el.btnCloseModalContacts.on('click', e=>{
+        this.el.btnCloseModalContacts.on('click', e => {
 
             this.el.modalContacts.hide();
 
         })
+
+        //Botão do microfone
+        this.el.btnSendMicrophone.on('click', e => {
+
+            this.el.recordMicrophone.show();
+            this.el.btnSendMicrophone.hide();
+            this.startRecordMicrophoneTime()
+
+        })
+
+        //Cancelar o microfone
+        this.el.btnCancelMicrophone.on('click', e => {
+
+            this.closeRecordMicrophone()
+
+        })
+
+        //Enviar o Audio
+        this.el.btnFinishMicrophone.on('click', e => {
+
+            this.closeRecordMicrophone()
+
+        })
     }
 
-    closeAllMainPanel(){
+    //Timer do audio
+    startRecordMicrophoneTime() {
+
+        let start = Date.now();
+
+        this._recordMicrophoneInterval = setInterval(() => { 
+
+            this.el.recordMicrophoneTimer.innerHTML = (Date.now() - start)
+
+        }, 100)
+
+    }
+
+    //Método para encerrar a ravação de audio
+    closeRecordMicrophone() {
+
+        this.el.recordMicrophone.hide();
+        this.el.btnSendMicrophone.show();
+        clearInterval(this._recordMicrophoneInterval)
+
+    }
+
+
+    //Método para fechar os paineis principais
+    closeAllMainPanel() {
 
         this.el.panelMessagesContainer.hide();
         this.el.panelDocumentPreview.removeClass('open');
         this.el.panelCamera.removeClass('open');
     }
 
+    //Método para fechar os paines de envio de arquivo
     closeMenuAttach(e) {
 
         document.removeEventListener('click', this.closeMenuAttach)
@@ -271,6 +326,7 @@ class WhatsAppController {
 
     }
 
+    //Método para fechar os paineis na esquerda
     closeAllLeftPanel() {
 
         this.el.panelAddContact.hide()
