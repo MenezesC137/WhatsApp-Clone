@@ -294,13 +294,13 @@ class WhatsAppController {
 
         this._recordMicrophoneInterval = setInterval(() => { 
 
-            this.el.recordMicrophoneTimer.innerHTML = (Date.now() - start)
+            this.el.recordMicrophoneTimer.innerHTML = Format.toTime(Date.now() - start)
 
         }, 100)
 
     }
 
-    //Método para encerrar a ravação de audio
+    //Método para encerrar a gravação de audio
     closeRecordMicrophone() {
 
         this.el.recordMicrophone.hide();
