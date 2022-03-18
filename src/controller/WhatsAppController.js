@@ -213,6 +213,8 @@ class WhatsAppController {
                 'height': '108%'
             })
 
+            this._camera = new CameraController(this.el.videoCamera);
+
         })
 
         this.el.btnClosePanelCamera.on('click', e => {
@@ -394,7 +396,6 @@ class WhatsAppController {
         clearInterval(this._recordMicrophoneInterval)
 
     }
-
 
     //Método para fechar os paineis principais
     closeAllMainPanel() {
