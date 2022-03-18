@@ -1,4 +1,4 @@
-class Format {
+export class Format {
 
     //Formatar o caamelCase
     static getCamelCase(text) {
