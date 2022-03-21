@@ -1,5 +1,7 @@
 import {Format} from './../util/Format.js'
 import {CameraController} from './CameraController.js'
+import {DocumentPreviewController} from './DocumentPreviewController.js'
+
 
 export class WhatsAppController {
 
@@ -192,6 +194,7 @@ export class WhatsAppController {
 
         })
 
+        //Botão para abrir a camera
         this.el.btnAttachPhoto.on('click', e => {
             this.el.inputPhoto.click();
         })
@@ -208,6 +211,7 @@ export class WhatsAppController {
 
         })
 
+        //Painel de foto
         this.el.btnAttachCamera.on('click', e => {
 
             this.closeAllMainPanel();
@@ -220,6 +224,7 @@ export class WhatsAppController {
             this._camera = new CameraController(this.el.videoCamera);
         });
 
+        //Fechar o Painel da foto
         this.el.btnClosePanelCamera.on('click', e => {
 
             this.closeAllMainPanel();
@@ -228,6 +233,7 @@ export class WhatsAppController {
 
         });
 
+        //Tirar foto
         this.el.btnTakePicture.on('click', e => {
 
             let dataUrl = this._camera.takePicture();
@@ -241,6 +247,7 @@ export class WhatsAppController {
 
         });
 
+        //Reiniciar o painel da foto
         this.el.btnReshootPanelCamera.on('click', e => {
 
             this.el.pictureCamera.hide();
@@ -249,26 +256,16 @@ export class WhatsAppController {
             this.el.containerTakePicture.show();
             this.el.containerSendPicture.hide();
 
-
-
         });
 
+        //Enviar a foto
         this.el.btnSendPicture.on('click', e=>{
 
             console.log(this.el.pictureCamera.src);
 
         })
 
-        this.el.btnReshootPanelCamera.on('click', e=>{
-
-            this.el.pictureCamera.hide()
-            this.el.videoCamera.show();
-            this.el.btnReshootPanelCamera.hide();
-            this.el.containerTakePicture.show();
-            this.el.containerSendPicture.hide();
-
-        })
-
+        //Botão para selecionar documento
         this.el.btnAttachDocument.on('click', e => {
 
             this.closeAllMainPanel();
@@ -277,6 +274,57 @@ export class WhatsAppController {
                 'height': '108%'
             })
 
+            this.el.inputDocument.click();
+
+        })
+
+        this.el.inputDocument.on('change', e => {
+            if (this.el.inputDocument.files.length) {
+                let file = this.el.inputDocument.files[0];
+
+                this._documentPreviewController = new DocumentPreviewController(file);
+
+                this._documentPreviewController.getPreviewData().then(result => {
+
+                    this.el.imgPanelDocumentPreview.src = result.src;
+                    this.el.infoPanelDocumentPreview.innerHTML = result.info;
+                    this.el.imagePanelDocumentPreview.show();
+                    this.el.filePanelDocumentPreview.hide();
+
+                }).catch(err => {
+
+                    console.log(file.type);
+
+                    switch (file.type){
+
+                        case 'application/vnd.ms-excel':
+                        case 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet':
+                            this.el.iconPanelDocumentPreview.classname = 'jcxhw icon-doc-xls'
+                            break;
+                        
+                        case 'application/vnd.ms-powerpoint':
+                        case 'application/vnd.openxmlformats-officedocument.presentationml.presentation':
+                            this.el.iconPanelDocumentPreview.className = 'jcxhw icon-doc-ppt';
+                            break;
+
+                        case 'application/msword':
+                        case 'application/vnd.openxmlformats-officedocument.wordprocessingml.document':
+                            this.el.iconPanelDocumentPreview.className = 'jcxhw icon-doc-doc';
+                            break;
+        
+                        break;
+
+                        default:
+                            this.el.iconPanelDocumentPreview.classname = 'jcxhw icon-doc-generic'
+                    }
+
+
+                    this.el.fileNamePanelDocumentPreview.innerHTML = file.name;
+                    this.el.imagePanelDocumentPreview.hide();
+                    this.el.filePanelDocumentPreview.show();
+
+                })
+            }
         })
 
         this.el.btnClosePanelDocumentPreview.on('click', e => {
