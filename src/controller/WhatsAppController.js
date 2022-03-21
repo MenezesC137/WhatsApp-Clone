@@ -1,5 +1,5 @@
 import {Format} from './../util/Format'
-import {CameraController} from './cameraController'
+import {CameraController} from './CameraController'
 
 export class WhatsAppController {
 
@@ -224,6 +224,7 @@ export class WhatsAppController {
 
             this.closeAllMainPanel();
             this.el.panelMessagesContainer.show();
+            this._camera.stop();
 
         })
 
