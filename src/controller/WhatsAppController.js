@@ -271,7 +271,8 @@ export class WhatsAppController {
             this.closeAllMainPanel();
             this.el.panelDocumentPreview.addClass('open')
             this.el.panelDocumentPreview.css({
-                'height': '108%'
+                'height': '100%',
+                'widht': '80%'
             })
 
             this.el.inputDocument.click();
@@ -280,6 +281,9 @@ export class WhatsAppController {
 
         this.el.inputDocument.on('change', e => {
             if (this.el.inputDocument.files.length) {
+               
+                
+               
                 let file = this.el.inputDocument.files[0];
 
                 this._documentPreviewController = new DocumentPreviewController(file);
@@ -291,10 +295,11 @@ export class WhatsAppController {
                     this.el.imagePanelDocumentPreview.show();
                     this.el.filePanelDocumentPreview.hide();
 
+                   
+
                 }).catch(err => {
 
-                    console.log(file.type);
-
+                   
                     switch (file.type){
 
                         case 'application/vnd.ms-excel':
@@ -319,7 +324,7 @@ export class WhatsAppController {
                     }
 
 
-                    this.el.fileNamePanelDocumentPreview.innerHTML = file.name;
+                    this.el.filenamePanelDocumentPreview.innerHTML = file.name;
                     this.el.imagePanelDocumentPreview.hide();
                     this.el.filePanelDocumentPreview.show();
 
