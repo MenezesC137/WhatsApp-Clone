@@ -22,8 +22,7 @@ export class WhatsAppController {
     //Autenticação do firebase
     initAuth() {
 
-        this._firebase.initAuth()
-            .then(response => {
+        this._firebase.initAuth().then(response => {
 
                 this._user = new User(response.user.email);
 
@@ -205,6 +204,7 @@ export class WhatsAppController {
             }
         })
 
+        //Editar o Nome
         this.el.btnSavePanelEditProfile.on('click', e => {
 
             this.el.btnSavePanelEditProfile.disabled = true;
@@ -218,12 +218,31 @@ export class WhatsAppController {
             })
         })
 
-        this.el.formPanelAddContact.on('submit'), e => {
+        //Adicionando um novo contato
+        this.el.formPanelAddContact.on('click'), e => {
 
             e.preventDefault();
 
             let formData = new FormData(this.el.formPanelAddContact);
 
+            let contact = new User(formData.get('email'));
+
+            contact.on('datachange', data => {
+
+                if(data.name) {
+                    
+                    this._user.addContact(contact).then(() => {
+                        this.el.btnClosePanelAddContact.click();
+                        console.info('Contato foi Adicionado');
+                    });
+
+
+                } else {
+
+                    console.error('Usuario não encontrado');
+               
+                }
+            })
         }
 
         this.el.contactsMessagesList.querySelectorAll('.contact-item').forEach(item => {
