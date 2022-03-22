@@ -1,7 +1,7 @@
-import {Format} from './../util/Format.js'
-import {CameraController} from './CameraController.js'
-import {MicrophoneController} from './MicrophoneController.js'
-import {DocumentPreviewController} from './DocumentPreviewController.js'
+import { Format } from './../util/Format.js'
+import { CameraController } from './CameraController.js'
+import { MicrophoneController } from './MicrophoneController.js'
+import { DocumentPreviewController } from './DocumentPreviewController.js'
 import { Firebase } from '../util/Firebase.js'
 import { User } from '../model/User.js'
 
@@ -16,31 +16,49 @@ export class WhatsAppController {
         this.elementsPrototype();
         this.loadElements();
         this.initEvents();
-        
+
     }
 
     //Autenticação do firebase
-    initAuth(){
+    initAuth() {
 
         this._firebase.initAuth()
-            .then(response=>{
-                
-                this._user = new User();
+            .then(response => {
 
-                let userRef = User.findByEmail(response.user.email);
+                this._user = new User(response.user.email);
 
-                userRef.set({
-                    name: response.user.displayName,
-                    email: response.user.email,
-                    photo: response.user.photoURL
-                }).then(()=>{
+                this._user.on('datachange', data =>{
+
+                    document.querySelector('title').innerHTML = data.name + ' - WhatsApp Clone';
+
+                    this.el.inputNamePanelEditProfile.innerHTML = data.name;
+
+                    if (data.photo) {
+
+                        let photo = this.el.imgPanelEditProfile;
+                        photo.src = data.photo;
+                        photo.show();
+                        this.el.imgDefaultPanelEditProfile.hide();
+                  
+                        let photo2 = this.el.myPhoto.querySelector('img')
+                        photo2.src = data.photo;
+                        photo2.show();
+                   
+                    }
+                })
+
+                this._user.name = response.user.displayName;
+                this._user.email = response.user.email;
+                this._user.photo = response.user.photoURL;
+
+                this._user.save().then(()=>{
 
                     this.el.appContent.css({
-                        display:'flex'
-                    });
-                })
+                        display: 'flex'
+                    })
+                }) 
             })
-            .catch(err=>{
+            .catch(err => {
                 console.error(err);
             });
     }
@@ -288,7 +306,7 @@ export class WhatsAppController {
         });
 
         //Enviar a foto
-        this.el.btnSendPicture.on('click', e=>{
+        this.el.btnSendPicture.on('click', e => {
 
             console.log(this.el.pictureCamera.src);
 
@@ -309,9 +327,9 @@ export class WhatsAppController {
 
         this.el.inputDocument.on('change', e => {
             if (this.el.inputDocument.files.length) {
-               
-                
-               
+
+
+
                 let file = this.el.inputDocument.files[0];
 
                 this._documentPreviewController = new DocumentPreviewController(file);
@@ -323,18 +341,18 @@ export class WhatsAppController {
                     this.el.imagePanelDocumentPreview.show();
                     this.el.filePanelDocumentPreview.hide();
 
-                   
+
 
                 }).catch(err => {
 
-                   
-                    switch (file.type){
+
+                    switch (file.type) {
 
                         case 'application/vnd.ms-excel':
                         case 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet':
                             this.el.iconPanelDocumentPreview.classname = 'jcxhw icon-doc-xls'
                             break;
-                        
+
                         case 'application/vnd.ms-powerpoint':
                         case 'application/vnd.openxmlformats-officedocument.presentationml.presentation':
                             this.el.iconPanelDocumentPreview.className = 'jcxhw icon-doc-ppt';
@@ -344,8 +362,8 @@ export class WhatsAppController {
                         case 'application/vnd.openxmlformats-officedocument.wordprocessingml.document':
                             this.el.iconPanelDocumentPreview.className = 'jcxhw icon-doc-doc';
                             break;
-        
-                        break;
+
+                            break;
 
                         default:
                             this.el.iconPanelDocumentPreview.classname = 'jcxhw icon-doc-generic'
@@ -393,7 +411,7 @@ export class WhatsAppController {
 
             this._microphoneController = new MicrophoneController();
 
-            this._microphoneController.on('play', musica=>{
+            this._microphoneController.on('play', musica => {
 
                 console.log('ready event');
 
@@ -401,7 +419,7 @@ export class WhatsAppController {
 
             })
 
-            this._microphoneController.on('recordtimer', timer =>{
+            this._microphoneController.on('recordtimer', timer => {
 
                 this.el.recordMicrophoneTimer.innerHTML = Format.toTime(timer)
 
@@ -427,7 +445,7 @@ export class WhatsAppController {
         //Enviar mensagem com o Enter
         this.el.inputText.on('keypress', e => {
 
-            if(e.key === 'Enter' && !e.ctrlKey) {
+            if (e.key === 'Enter' && !e.ctrlKey) {
 
                 e.preventDefault();
                 this.el.btnSend.click();
@@ -452,7 +470,7 @@ export class WhatsAppController {
 
             }
 
-            this.el.btnSend.on('click', e=>{
+            this.el.btnSend.on('click', e => {
 
                 console.log(this.el.inputText.innerHTML);
 
@@ -460,26 +478,26 @@ export class WhatsAppController {
         })
 
         //Botão de Emoji
-        this.el.btnEmojis.on('click', e =>{
+        this.el.btnEmojis.on('click', e => {
 
             this.el.panelEmojis.toggleClass('open');
 
         })
 
         //Seletor de emoji
-        this.el.panelEmojis.querySelectorAll('.emojik').forEach(emoji =>{
+        this.el.panelEmojis.querySelectorAll('.emojik').forEach(emoji => {
 
-            emoji.on('click', e=>{
+            emoji.on('click', e => {
 
                 console.log(emoji.dataset.unicode);
 
                 let img = this.el.imgEmojiDefault.cloneNode();
-            
+
                 img.style.cssText = emoji.style.cssText;
                 img.dataset.unicode = emoji.dataset.unicode;
                 img.alt = emoji.dataset.unicode;
 
-                emoji.classList.forEach(name=>{
+                emoji.classList.forEach(name => {
                     img.classList.add(name);
                 })
 
@@ -516,7 +534,7 @@ export class WhatsAppController {
 
         this.el.recordMicrophone.hide();
         this.el.btnSendMicrophone.show();
-        
+
     }
 
     //Método para fechar os paineis principais
