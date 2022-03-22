@@ -251,9 +251,7 @@ export class WhatsAppController {
             this.el.panelAddContact.show();
             setTimeout(() => {
                 this.el.panelAddContact.addClass('open');
-
             }, 300)
-
         })
 
         //Fechar o menu config
@@ -319,7 +317,6 @@ export class WhatsAppController {
                         this.el.btnClosePanelAddContact.click();
                         console.info('Contato foi Adicionado');
                     });
-
 
                 } else {
 

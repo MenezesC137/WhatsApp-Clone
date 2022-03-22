@@ -1,5 +1,3 @@
-import { typeIsObject } from 'pdfjs-dist';
-
 const firebase = require('firebase')
 require('firebase/firestore')
 
@@ -55,19 +53,19 @@ export class Firebase {
             let provider = new firebase.auth.GoogleAuthProvider();
 
             firebase.auth().signInWithPopup(provider)
-            .then(result =>{
+                .then(result =>{
 
-                let token = result.credential.accessToken;
-                let user = result.user;
+                    let token = result.credential.accessToken;
+                    let user = result.user;
 
-                s({
-                    user,
-                    token
+                    s({
+                        user,
+                        token
+                    })
+
+                }).catch(err =>{
+                    f(err);
                 })
-
-            }).catch(err =>{
-                f(err);
-            })
         })
     }
 }
