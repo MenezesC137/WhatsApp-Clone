@@ -28,7 +28,6 @@ export class Message extends Model {
 
         switch (this.type) {
 
-            
             case 'contact':
                 div.innerHTML = `
                     <div class="_3_7SH kNKwo tail">
