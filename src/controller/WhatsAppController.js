@@ -653,6 +653,8 @@ export class WhatsAppController {
     //Método para encerrar a gravação de audio
     closeRecordMicrophone() {
 
+        this._microphoneController.stopRecorder();
+
         this.el.recordMicrophone.hide();
         this.el.btnSendMicrophone.show();
 
