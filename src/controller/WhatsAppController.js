@@ -555,7 +555,7 @@ export class WhatsAppController {
                     this.el.btnSendPicture.disabled = false
 
                     this.closeAllMainPanel()
-                    this.el._camera.stop()
+                    this._camera.stop()
                     this.el.btnReshootPanelCamera.hide()
                     this.el.pictureCamera.hide()
                     this.el.videoCamera.show()
