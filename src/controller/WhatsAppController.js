@@ -6,6 +6,7 @@ import { Firebase } from './../util/Firebase.js'
 import { User } from './../model/User.js'
 import { Chat } from './../model/Chat.js'
 import { Message } from './../model/Message.js'
+import { Base64 } from './../util/Base64.js'
 
 export class WhatsAppController {
 
@@ -213,7 +214,15 @@ export class WhatsAppController {
 
                         this.el.panelMessagesContainer.appendChild(view)
                     
-                    } else if (me) {
+                    } else {
+
+                        let view = message.getViewElement(me)
+
+                        this.el.panelMessagesContainer.querySelector('#_' + data.id).innerHTML = view.innerHTML
+
+                    }
+                    
+                    if (this.el.panelMessagesContainer.querySelector('#_' + data.id) && me) {
 
                         let msgEl = this.el.panelMessagesContainer.querySelector('#_' + data.id)
 
@@ -524,6 +533,7 @@ export class WhatsAppController {
         this.el.btnSendPicture.on('click', e => {
 
             this.el.btnSendPicture.disabled = true
+           
             let regex = /^data:(.+);base64,(.*)$/;
             let result = this.el.pictureCamera.src.match(regex)
             let mimeType = result[1]
@@ -641,7 +651,25 @@ export class WhatsAppController {
 
         this.el.btnSendDocument.on('click', e => {
 
-            console.log('send document');
+            let file = this.el.inputDocument.files[0]
+            let base64 = this.el.imagePanelDocumentPreview.src;
+
+            if(file.type === 'application/pdf') {
+
+                Base64.toFile(base64).then(filePreview =>{
+
+                    Message.sendDocument(
+                        this._contactActive.chatId,
+                        this._user.email, file, filePreview, this.el.infoPanelDocumentPreview.innerHTML)
+                })
+            } else {
+
+                Message.sendDocument(
+                    this._contactActive.chatId,
+                    this._user.email, file)
+            }
+
+            this.el.btnClosePanelDocumentPreview.click();
 
         })
 
