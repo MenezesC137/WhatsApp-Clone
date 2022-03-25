@@ -24,7 +24,6 @@ export class Upload {
                 s(uploadTask.snapshot);
 
             });
-
         });
-    }
+    }   
 }
