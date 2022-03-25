@@ -1,24 +1,18 @@
 import { ClassEvent } from "../util/ClassEvent";
 
-export class Model extends ClassEvent{
+export class Model extends ClassEvent {
 
-    constructor(){
-
-        super()
+    constructor() {
+        super();
         this._data = {}
-        
     }
 
-    fromJSON(json){
-
+    fromJSON(json) {
         this._data = Object.assign(this._data, json);
         this.trigger('datachange', this.toJSON());
-
     }
 
-    toJSON(){
-
+    toJSON() {
         return this._data;
-
     }
 }

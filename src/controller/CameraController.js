@@ -7,7 +7,7 @@ export class CameraController {
         navigator.mediaDevices.getUserMedia({ video: true }).then(stream => {
 
             this._stream = stream;
-            this._videoEl.srcObject = stream;
+            this._videoEl.srcObject = stream
             this._videoEl.play();
 
         }).catch(err => {
@@ -15,12 +15,15 @@ export class CameraController {
             console.error(err);
 
         });
+
     }
 
     stop() {
 
         this._stream.getTracks().forEach(track => {
+
             track.stop();
+
         });
 
     }
@@ -39,4 +42,6 @@ export class CameraController {
         return canvas.toDataURL(mimeType);
 
     }
+
+
 }

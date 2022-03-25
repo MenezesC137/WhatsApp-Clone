@@ -1,6 +1,5 @@
 export class Format {
 
-    //Formatar o caamelCase
     static getCamelCase(text) {
 
         let div = document.createElement('div');
@@ -11,33 +10,31 @@ export class Format {
 
     }
 
-    //Formatar o timer da gravação
-    static toTime(duration){
+    static toTime(duration) {
 
-        let seconds = parseInt((duration / 1000) % 60)
-        let minutes = parseInt((duration / (1000 * 60)) % 60)
+        let seconds = parseInt((duration / 1000) % 60);
+        let minutes = parseInt((duration / (1000 * 60)) % 60);
         let hours = parseInt((duration / (1000 * 60 * 60)) % 24)
-        
+
         if (hours > 0) {
-            return `${hours}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`
+            return `${hours}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
         } else {
-            return `${minutes}:${seconds.toString().padStart(2, '0')}`
+            return `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
         }
+
     }
 
-    static dateToTime(date, locale = 'pt-BR') {
+    static dateToTime(date, locale = 'pt-BR'){
 
         return date.toLocaleTimeString(locale, {
-            hour:'2-digit',
+            hour: '2-digit',
             minute: '2-digit'
-        })
+        });
     }
 
-    //Formatar a hora da mensagem
     static timeStampToTime(timeStamp){
 
-        return (timeStamp && typeof timeStamp.toDate === 'function') ? 
-        Format.dateToTime(timeStamp.toDate()) : ''
+        return (timeStamp && typeof timeStamp.toDate === 'function') ? Format.dateToTime(timeStamp.toDate()): '';
 
     }
 }

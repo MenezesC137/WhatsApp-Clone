@@ -1,17 +1,19 @@
-const firebase = require('firebase')
-require('firebase/firestore')
+const firebase = require('firebase');
+require('firebase/firestore');
 
 export class Firebase {
 
     constructor(){
 
-        this._config = {
-            apiKey: "AIzaSyCQsrC6NFR45d2lyjW1j__U7Hpj2SXlXA4",
-            authDomain: "whatsapp-clone-2bee2.firebaseapp.com",
-            projectId: "whatsapp-clone-2bee2",
-            storageBucket: "whatsapp-clone-2bee2.appspot.com",
-            messagingSenderId: "652586951103",
-            appId: "1:652586951103:web:dc0b1535ae15564d8e010a"
+        this.firebaseConfig = {
+            
+            apiKey: "AIzaSyAqKNxR_voJ9OIUiYCZwxy9lbghj81LAgM",
+            authDomain: "whatsapp-clone-656ee.firebaseapp.com",
+            projectId: "whatsapp-clone-656ee",
+            storageBucket: "whatsapp-clone-656ee.appspot.com",
+            messagingSenderId: "74406977601",
+            appId: "1:74406977601:web:a460486ee8cce1dfd3e6c0"
+            
         }
 
         this.init();
@@ -20,17 +22,14 @@ export class Firebase {
 
     init(){
 
-        if(!window._initializedFirebase) {
-
-            // Initialize Firebase
-            firebase.initializeApp(this._config);
+        if (!window._initializedFirebase) {
+            firebase.initializeApp(this.firebaseConfig);
 
             firebase.firestore().settings({
                 timestampsInSnapshots: true
-            })
+            });
 
             window._initializedFirebase = true;
-
         }
     }
 
@@ -53,19 +52,27 @@ export class Firebase {
             let provider = new firebase.auth.GoogleAuthProvider();
 
             firebase.auth().signInWithPopup(provider)
-                .then(result =>{
+            .then(result => {
 
-                    let token = result.credential.accessToken;
-                    let user = result.user;
 
-                    s({
-                        user,
-                        token
-                    })
+                let token = result.credential.accessToken;
+                let user = result.user;
 
-                }).catch(err =>{
-                    f(err);
-                })
-        })
+                s({
+                    user,
+                    token
+                });
+
+            });
+            
+            
+            }).catch(err=>{
+
+                f(err);
+
+            });
+
+        
+
+        }
     }
-}
