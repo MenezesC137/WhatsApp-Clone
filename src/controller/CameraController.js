@@ -4,10 +4,15 @@ export class CameraController {
 
         this._videoEl = videoEl;
 
-        navigator.mediaDevices.getUserMedia({ video: true }).then(stream => {
+        navigator.mediaDevices.getUserMedia({
+
+            video: true
+
+        }).then(stream => {
 
             this._stream = stream;
-            this._videoEl.srcObject = stream
+
+            this._videoEl.srcObject = stream;
             this._videoEl.play();
 
         }).catch(err => {
@@ -21,9 +26,7 @@ export class CameraController {
     stop() {
 
         this._stream.getTracks().forEach(track => {
-
             track.stop();
-
         });
 
     }
@@ -33,7 +36,7 @@ export class CameraController {
         let canvas = document.createElement('canvas');
 
         canvas.setAttribute('height', this._videoEl.videoHeight);
-        canvas.setAttribute('width', this._videoEl.videoWidth);
+        canvas.setAttribute('width', this._videoEl.videoeWidth);
 
         let context = canvas.getContext('2d');
 
@@ -42,6 +45,5 @@ export class CameraController {
         return canvas.toDataURL(mimeType);
 
     }
-
 
 }
